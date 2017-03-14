@@ -139,7 +139,6 @@ namespace Demo.MiniDump
         public static void Init()
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CD_UnhandledException);
-            //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException); // forces all unhandled winform exceptions through thread exception
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(App_ThreadException);
         }
 
