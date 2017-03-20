@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.MiniDump", "Demo.MiniD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.SplashScreen", "Demo.SplashScreen\Demo.SplashScreen.csproj", "{B10A45B0-809C-413C-9134-D1BD5D4DCDC4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Command", "Demo.Command\Demo.Command\Demo.Command.csproj", "{3FD07B81-2A6D-4C4F-87A5-5271F0A64276}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{B10A45B0-809C-413C-9134-D1BD5D4DCDC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B10A45B0-809C-413C-9134-D1BD5D4DCDC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B10A45B0-809C-413C-9134-D1BD5D4DCDC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FD07B81-2A6D-4C4F-87A5-5271F0A64276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FD07B81-2A6D-4C4F-87A5-5271F0A64276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FD07B81-2A6D-4C4F-87A5-5271F0A64276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FD07B81-2A6D-4C4F-87A5-5271F0A64276}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,5 +49,6 @@ Global
 		{F4282AB4-E2C0-406B-90B0-EE231768AB84} = {EDD55F03-FA5D-4CCB-AE48-A0257CFCE55B}
 		{41BDA4B3-D04A-4B9C-9C7E-DAA99128DA08} = {EDD55F03-FA5D-4CCB-AE48-A0257CFCE55B}
 		{B10A45B0-809C-413C-9134-D1BD5D4DCDC4} = {EDD55F03-FA5D-4CCB-AE48-A0257CFCE55B}
+		{3FD07B81-2A6D-4C4F-87A5-5271F0A64276} = {EDD55F03-FA5D-4CCB-AE48-A0257CFCE55B}
 	EndGlobalSection
 EndGlobal
