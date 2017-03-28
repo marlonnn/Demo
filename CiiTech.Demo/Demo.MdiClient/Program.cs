@@ -21,7 +21,7 @@ namespace Demo.Mdi
                 _mainForm = new Form();
                 Application.Run(_mainForm);
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }

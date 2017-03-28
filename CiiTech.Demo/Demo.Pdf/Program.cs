@@ -1,4 +1,4 @@
-﻿using Demo.Pdf.ReportCtrls;
+﻿using Demo.Pdf.EditorCtrls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +15,15 @@ namespace Demo.Pdf
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ReportForm());
+            try
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new EditorForm());
+            }
+            catch (Exception ee)
+            {
+            }
         }
     }
 }
