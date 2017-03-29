@@ -59,16 +59,48 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExtensionMethods.cs" />
-    <Compile Include="PDFCreatorSetting.cs" />
-    <Compile Include="RichTextBoxPrintCtrl.cs">
-      <SubType>Component</SubType>
+    <Compile Include="EditorCtrls\ReportCtrl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="EditorCtrls\ReportCtrl.Designer.cs">
+      <DependentUpon>ReportCtrl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportCtrlText.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportCtrlText.Designer.cs">
+      <DependentUpon>ReportCtrlText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="EditorCtrls\ReportForm.Designer.cs">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportLayout.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportLayout.Designer.cs">
+      <DependentUpon>ReportLayout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportOperateManage.cs" />
+    <Compile Include="EditorCtrls\ReportPageUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EditorCtrls\ReportPageUI.Designer.cs">
+      <DependentUpon>ReportPageUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="PDFCreatorSetting.cs" />
+    <Compile Include="Reports\Report.cs" />
+    <Compile Include="Reports\ReportItemBase.cs" />
+    <Compile Include="Reports\ReportPage.cs" />
+    <Compile Include="Reports\ReportTextItem.cs" />
+    <Compile Include="RichTextBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RichTextBoxPrintCtrl.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +110,9 @@
     <Compile Include="EditorCtrls\EditorForm.Designer.cs">
       <DependentUpon>EditorForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EditorCtrls\ReportForm.resx">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -105,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Interop.PDFCreator.dll" />
+    <Content Include="Resources\Delete Page.png" />
+    <Content Include="Resources\Insert Page.png" />
     <Content Include="Resources\Insert Picture.png" />
     <Content Include="Resources\logo.ico" />
     <Content Include="Resources\new.png" />

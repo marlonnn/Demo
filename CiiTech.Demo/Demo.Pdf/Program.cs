@@ -1,4 +1,5 @@
 ﻿using Demo.Pdf.EditorCtrls;
+using Demo.Pdf.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace Demo.Pdf
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new EditorForm());
+                Report report = new Report();
+                Application.Run(new ReportForm(report));
             }
             catch (Exception ee)
             {

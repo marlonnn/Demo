@@ -14,6 +14,9 @@ using System.Collections;
 
 namespace Demo.Pdf
 {
+    /// <summary>
+    /// 扩展方法
+    /// </summary>
     public static class ExtensionMethods
     {
 

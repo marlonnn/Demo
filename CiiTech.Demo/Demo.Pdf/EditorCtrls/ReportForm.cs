@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Demo.Pdf.Reports;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,7 +14,7 @@ using System.Windows.Forms;
 
 namespace Demo.Pdf.EditorCtrls
 {
-    public partial class EditorForm : DevComponents.DotNetBar.Office2007Form
+    public partial class ReportForm : DevComponents.DotNetBar.Office2007Form
     {
         private string currentFile;
 
@@ -31,7 +32,40 @@ namespace Demo.Pdf.EditorCtrls
         private System.Windows.Forms.Timer timer;
         public int CheckPrint { private set; get; }
 
-        public EditorForm()
+        private RichTextBoxPrintCtrl rtbDoc;
+
+        public static int PAGE_WIDTH = 827;
+        public static int PAGE_HEIGHT = 1169;
+        private Report _report;
+        private List<ReportPageUI> _pages = new List<ReportPageUI>();
+        public List<ReportPageUI> Pages
+        {
+            get
+            {
+                return this._pages;
+            }
+        }
+
+        private ReportOperateManage _reportOperateManage;
+        public ReportOperateManage ReportOperateManage
+        {
+            get { return _reportOperateManage; }
+        }
+
+        public Report Report
+        {
+            get { return _report; }
+            private set
+            {
+                if (_report == value) return;
+
+                //if (_report != null) _report.Update -= _report_Update;
+                _report = value;
+                //if (_report != null) _report.Update += _report_Update;
+            }
+        }
+
+        public ReportForm()
         {
             InitializeComponent();
             currentFile = "";
@@ -49,6 +83,17 @@ namespace Demo.Pdf.EditorCtrls
             timer = new System.Windows.Forms.Timer();
             timer.Interval = 100;
             timer.Tick += new EventHandler(timer_Tick);
+        }
+
+        public ReportForm(Report report) : this()
+        {
+            Report = report;
+
+            Report.Factor = 100f;  //打开时设置为100%
+                                   //   LoadForm();
+            //SetAlignAndAdjustToolStripButton(false);
+            ////InitializeTextMenuItem();
+            //Disposed += new EventHandler(ReportForm_Disposed);
         }
 
         /// <summary>
@@ -96,8 +141,17 @@ namespace Demo.Pdf.EditorCtrls
 
         private void EditorForm_Load(object sender, EventArgs e)
         {
+            InitialPageSize();
             PDFCreatorSetting.Instance.PDFCreatorReady += new EventHandler(Instance_PDFCreatorReady);
+            _reportOperateManage = new ReportOperateManage(_report, _pages);
+            _reportOperateManage.PageChange += new EventHandler<PageChangeEventArgs>(_reportOperateManage_PageChange);
         }
+
+        void _reportOperateManage_PageChange(object sender, PageChangeEventArgs e)
+        {
+            this.tslPages.Text = "Page: " + "/" + e.TotalPage.ToString();
+        }
+
 
         private void OpenFile()
         {
@@ -687,6 +741,102 @@ namespace Demo.Pdf.EditorCtrls
             {
                 e.HasMorePages = false;
             }
+        }
+
+        private void InsertReportPage(int pageNum)
+        {
+            if (pageNum < 0) pageNum = 0;
+            if (pageNum >= _pages.Count) pageNum = _pages.Count;
+
+            ReportPage reportPage = new ReportPage();
+            ReportPageUI NewPageUI = new ReportPageUI(reportPage);
+
+            _report.ReportPages.Insert(pageNum, reportPage);
+            _pages.Insert(pageNum, NewPageUI);
+            this.reportLayout.Controls.Add(NewPageUI);
+        }
+
+        private int _pagesInOnline = 1;
+        private const int _pagesSpace = 10;
+        private const int _pagesLeftSpace = 5;
+        private int _pageWidth;
+        private int _pageHeight;
+        private int _pageLeft;
+        private int _pageTop;
+        //pageNo from 1
+        private void SetPageBounds(ReportPageUI page, int pageNo)
+        {
+            int top = this.reportLayout.AutoScrollPosition.Y;
+            int left = this.reportLayout.AutoScrollPosition.X;
+            _pagesInOnline = this.Width / _pageWidth < 1 ? 1 : this.Width / _pageWidth; // calculate how many pages display in one line
+
+            if (_pagesInOnline > 1)
+                if (this.Width < (_pageWidth * _pagesInOnline) + _pagesLeftSpace * (_pagesInOnline - 1)) _pagesInOnline -= 1;
+            // calculate page belong to which column.
+            int pageColumn = (pageNo % _pagesInOnline) == 0 ? _pagesInOnline : pageNo % _pagesInOnline; // data from 1;
+            int firstPageLeft = (this.Width - ((_pageWidth * _pagesInOnline) + _pagesLeftSpace * (_pagesInOnline - 1))) / 2 <= 0 ? 1
+                : (this.Width - ((_pageWidth * _pagesInOnline) + _pagesLeftSpace * (_pagesInOnline - 1))) / 2;
+            int pageLeft = firstPageLeft + ((pageColumn - 1) * (_pageWidth + _pagesLeftSpace)) + left;
+            // calculate page top
+            pageNo = (int)(Math.Ceiling((pageNo / (double)_pagesInOnline)));         //pageNo data from 1;   
+            int pageTop = (_pageHeight * (pageNo - 1) + _pagesSpace * (pageNo + 1) + top);
+
+            page.Bounds = new Rectangle(new Point(pageLeft, pageTop),
+                new Size(_pageWidth, _pageHeight));
+
+            pnlSpace.Location = new Point(pageLeft, pageTop + _pageHeight);
+            pnlSpace.SendToBack();
+
+        }
+
+        private void InitialPageSize()
+        {
+
+            float coefficent = _report.Factor / 100;
+
+            if (_report.Landscape)
+            {
+                _pageHeight = (int)(PAGE_WIDTH * coefficent);
+                _pageWidth = (int)(PAGE_HEIGHT * coefficent);
+            }
+            else
+            {
+                _pageHeight = (int)(PAGE_HEIGHT * coefficent);
+                _pageWidth = (int)(PAGE_WIDTH * coefficent);
+            }
+
+            _pageLeft = (this.Width - _pageWidth) / 2;
+            _pageTop = _pagesSpace;
+            //  g.Dispose();
+        }
+
+        private void AdjustPagePosition()
+        {
+            for (int i = 0; i < _pages.Count; i++)
+            {
+                SetPageBounds(_pages[i], i + 1);
+                foreach (var item in _pages[i].Controls)
+                {
+                    ReportCtrl rc = item as ReportCtrl;
+                    if (rc != null)
+                    {
+                        rc.ResetSubCtrlLocation();
+                    }
+                }
+            }               
+        }
+
+        private void tsbInsertPage_Click(object sender, EventArgs e)
+        {
+            int pageIndex = ReportOperateManage.GetCurrentReportPageIndex();
+            InsertReportPage(pageIndex);
+            AdjustPagePosition();
+            ReportOperateManage.SetSeletectedPage(pageIndex);
+        }
+
+        private void tsbDeletePage_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
